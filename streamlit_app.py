@@ -292,16 +292,14 @@ if st.session_state.data_generated:
         ),
         horizontal_spacing=0.1
     )
-    
+
+    weight_range = np.linspace(-50, 50, 400)  # Fixed range for weight
+    bias_range = np.linspace(-100, 100, 400)    # Broader range with more points
+
     # Calculate broader ranges for weight and bias
     if st.session_state.weight is not None:
         current_loss = st.session_state.loss_history[-1]
-        # Extend ranges until loss is significantly higher than current
-        weight_range = np.linspace(-10, 10, 400)  # Broader range with more points
-        bias_range = np.linspace(-20, 60, 400)    # Broader range with more points
     else:
-        weight_range = np.linspace(-10, 10, 400)
-        bias_range = np.linspace(-20, 60, 400)
         current_loss = None
 
     
@@ -337,6 +335,13 @@ if st.session_state.data_generated:
             ),
             row=1, col=1
         )
+    # Set view range for weight plot
+    if st.session_state.weight is not None:
+        view_center = st.session_state.weight
+        fig.update_xaxes(
+            range=[max(-50, view_center - 10), min(50, view_center + 10)],
+            row=1, col=1
+        )
     
     # Bias loss landscape
     bias_losses = compute_loss_curve(
@@ -368,6 +373,14 @@ if st.session_state.data_generated:
                 marker=dict(color='#FF4B4B', size=10),
                 showlegend=False
             ),
+            row=1, col=2
+        )
+
+    # Set view range for bias plot
+    if st.session_state.bias is not None:
+        view_center = st.session_state.bias
+        fig.update_xaxes(
+            range=[max(-100, view_center - 20), min(100, view_center + 20)],
             row=1, col=2
         )
     
