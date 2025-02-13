@@ -1,1 +1,4 @@
 streamlit
+plotly
+matplotlib
+scikit-learn
